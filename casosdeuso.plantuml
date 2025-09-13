@@ -1,0 +1,26 @@
+@startuml
+left to right direction
+actor "Estudiante" as E
+actor "Docente" as D
+actor "Administrador" as A
+
+rectangle "Sistema de Reserva" {
+  usecase "Visualizar Disponibilidad" as UC1
+  usecase "Reservar Salón" as UC2
+  usecase "Cancelar Reserva" as UC3
+  usecase "Gestionar Permisos" as UC4
+  usecase "Integrar Calendario" as UC5
+}
+
+E -- UC1
+E -- UC2
+E -- UC3
+D -- UC1
+D -- UC2
+D -- UC3
+A -- UC4
+A -- UC5
+A -- UC1
+A -- UC2
+A -- UC3
+@enduml
