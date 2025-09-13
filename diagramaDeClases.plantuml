@@ -1,0 +1,70 @@
+@startuml
+skinparam ClassAttributeIconSize 0
+hide circle
+
+' Definición de las clases principales '
+
+class Usuario {
+  - id : Integer
+  - nombreCompleto : String
+  - correoInstitucional : String {unique}
+  - rol : String (Estudiante, Docente, Administrador)
+  --
+  + autenticarse()
+  + buscarSalones(criterios)
+  + reservarSalon(salon, fecha, hora)
+  + cancelarReserva(reserva)
+}
+
+class Salon {
+  - id : Integer
+  - nombre : String
+  - tipo : String (Aula, Laboratorio, Auditorio)
+  - capacidad : Integer
+  - recursos : String[] (Proyector, PC, Pizarra)
+  - ubicacion : String
+  --
+  + estaDisponible(fecha, hora) : Boolean
+}
+
+class Reserva {
+  - id : Integer
+  - fecha : Date
+  - horaInicio : Time
+  - horaFin : Time
+  - estado : String (Confirmada, Cancelada, Pendiente)
+  - motivo : String {optional}
+  --
+  + notificar()
+  + validarConflicto()
+}
+
+' Relaciones entre clases '
+
+Usuario "1" -- "0..*" Reserva : realiza
+Salon "1" -- "0..*" Reserva : tiene
+Salon "1" -- "0..*" Recurso : incluye
+
+class CalendarioAcademico {
+  - id : Integer
+  - eventos : List<Evento>
+  --
+  + agregarFeriado(fecha)
+  + bloquearHorario(fecha, hora)
+}
+
+class Evento {
+  - id : Integer
+  - nombre : String
+  - fecha : Date
+  - horario : String
+}
+
+CalendarioAcademico "1" -- "*" Evento : contiene
+
+' Notas Adicionales '
+note top of Usuario : Módulo de gestión de permisos
+
+note right of Reserva : Las reservas son únicas y no pueden superponerse
+
+@enduml
